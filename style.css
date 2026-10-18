@@ -1,0 +1,158 @@
+:root{--bg:#0b1320;--ink:#e6edf7;--muted:#93a3bb;--line:#22324a;--accent:#5ad1c2;--on:#06231f;--pl:62%;--p:0;
+--display:'Newsreader',Georgia,'Times New Roman',serif;--body:'Hanken Grotesk','Segoe UI',system-ui,sans-serif;color-scheme:dark}
+:root[data-theme="light"]{--bg:#f4f6fa;--ink:#0e1a2b;--muted:#52617a;--line:#d9e0ea;--accent:#0b7a75;--on:#fff;--pl:38%;color-scheme:light}
+*{box-sizing:border-box}
+html{background:var(--bg);font-size:clamp(16px,.55vw + 10px,19px);scroll-behavior:smooth;scroll-padding-top:64px}
+html.lock{overflow:hidden}
+body{margin:0;color:var(--ink);font:400 1.0625rem/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;letter-spacing:-.01em}
+p{margin:0 0 1em}
+.muted{color:var(--muted)}
+
+/* grid-paper background */
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+ --gap:16px;--m:calc(var(--gap)*5);--hue:215;--op:.35;
+ --minor:light-dark(hsl(var(--hue) 60% 20%/calc(var(--op)*.125)),hsl(var(--hue) 60% 80%/calc(var(--op)*.125)));
+ --major:light-dark(hsl(var(--hue) 60% 20%/calc(var(--op)*.35)),hsl(var(--hue) 60% 80%/calc(var(--op)*.35)));
+ --cross:light-dark(hsl(var(--hue) 60% 20%/var(--op)),hsl(var(--hue) 60% 80%/var(--op)));
+ background-color:var(--bg);
+ background-image:
+  linear-gradient(var(--minor) 0 1px,transparent 1px var(--gap)),
+  linear-gradient(to right,var(--minor) 0 1px,transparent 1px var(--gap)),
+  linear-gradient(var(--major) 0 1px,transparent 1px var(--m)),
+  linear-gradient(to right,var(--major) 0 1px,transparent 1px var(--m)),
+  radial-gradient(circle at center,transparent calc(var(--gap)/2),var(--bg) calc(var(--gap)/2)),
+  linear-gradient(var(--cross) 0 1px,transparent 1px var(--m)),
+  linear-gradient(to right,var(--cross) 0 1px,transparent 1px var(--m));
+ background-size:var(--gap) var(--gap),var(--gap) var(--gap),var(--m) var(--m),var(--m) var(--m),var(--m) var(--m),var(--m) var(--m),var(--m) var(--m);
+ background-position:0 0,0 0,0 0,0 0,calc(var(--gap)*-2.5) calc(var(--gap)*-2.5),0 0,0 0}
+/* colour glow that travels and shifts hue as you scroll (--p is 0 to 1) */
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+ background:
+  radial-gradient(60vmax 50vmax at calc(10% + var(--p)*80%) calc(var(--p)*100%),hsl(calc(172 + var(--p)*95) 80% 55%/.2),transparent 70%),
+  radial-gradient(45vmax 40vmax at calc(95% - var(--p)*85%) calc(100% - var(--p)*100%),hsl(calc(38 - var(--p)*55) 85% 58%/.12),transparent 70%)}
+
+/* plain header: logo left, text links right */
+.bar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:20px;
+ padding:max(18px,env(safe-area-inset-top)) clamp(20px,4vw,56px) 14px}
+.bar::before{content:"";position:absolute;inset:0;z-index:-1;background:color-mix(in srgb,var(--bg) 72%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.logo{font:600 1.4rem var(--display);letter-spacing:.06em;text-decoration:none;position:relative;z-index:2}
+nav{margin-left:auto;display:flex;gap:clamp(16px,2.6vw,36px)}
+nav a{font-size:.95rem;color:var(--muted);text-decoration:none;transition:filter .25s,opacity .25s,color .2s}
+nav a.on,nav a:hover{color:var(--ink)}
+@media (hover:hover){nav:has(a:hover) a:not(:hover){filter:blur(3px);opacity:.5}}
+.tools{display:flex;align-items:center;gap:8px;position:relative;z-index:2}
+#mode{display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:none;color:var(--ink);cursor:pointer}
+#menu{display:none;font:500 .95rem var(--body);color:var(--ink);background:none;border:0;padding:6px 2px;cursor:pointer}
+:root[data-theme="dark"] .moon,:root[data-theme="light"] .sun{display:none}
+
+/* sections: use the whole width */
+.slide{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(24px,5vw,88px);align-items:center;width:100%;max-width:1800px;margin-inline:auto;
+ padding:clamp(84px,12vh,120px) clamp(20px,5vw,72px) clamp(32px,6vh,56px);text-shadow:0 0 14px var(--bg),0 0 4px var(--bg)}
+.slide>h2{font-size:clamp(2.6rem,5.2vw,5rem);font-weight:600;line-height:1;letter-spacing:-.02em;overflow-wrap:anywhere}
+.section{position:relative}
+.big{font:500 clamp(1.35rem,2.4vw,2rem)/1.35 var(--display);margin-bottom:28px}
+
+/* hero */
+.hero{min-height:100svh;overflow:hidden}
+.hero .content{min-height:100svh;display:grid}
+.hero-slide{grid-template-columns:1fr;align-self:center;position:relative;z-index:1}
+.hero h1{font-size:clamp(5rem,19vw,15rem);font-weight:600;line-height:.9;letter-spacing:-.04em}
+.role{margin:24px 0 8px;font-size:clamp(1.1rem,1.8vw,1.5rem);font-weight:500;color:var(--accent)}
+.lede{color:var(--muted);font-size:clamp(1.05rem,1.5vw,1.3rem)}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-block;padding:12px 28px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-weight:600;transition:border-color .2s,filter .2s}
+.btn:hover{border-color:var(--accent)}
+.btn.main{background:var(--accent);border-color:var(--accent);color:var(--on);text-shadow:none}
+.btn.main:hover{filter:brightness(1.08)}
+
+/* content blocks: transparent, no cards */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:24px}
+.stats div{padding:16px 18px;border:1px solid var(--line);border-radius:20px}
+.stats b{display:block;font:600 2.2rem/1.1 var(--display);color:var(--accent)}
+.stats span{font-size:.88rem;line-height:1.3;color:var(--muted)}
+.body>p:last-child{margin:0}
+
+.job{display:grid;grid-template-columns:130px 1fr;gap:4px 24px;padding:0 0 22px}
+.job+.job{padding-top:22px;border-top:1px solid var(--line)}
+.job:last-child{padding-bottom:0}
+.when{margin:0;font-size:.92rem;color:var(--muted)}
+.job h3{font-size:1.35rem;font-weight:600;margin-bottom:8px}
+.job ul{margin:0;padding-left:1.1em}
+.job li{margin-bottom:5px}
+.job li::marker{color:var(--accent)}
+
+.proj{display:grid;grid-template-columns:1fr auto;gap:2px 20px;align-items:center;padding:16px 0;border-top:1px solid var(--line)}
+.proj:first-child{border-top:0;padding-top:0}
+.proj:last-child{padding-bottom:0}
+.proj h3{font-size:1.35rem;font-weight:600;transition:color .2s}
+.proj:hover h3{color:var(--accent)}
+.proj p{grid-column:1/-1;margin:2px 0 0}
+.proj .tech{color:var(--muted);font-size:.92rem}
+.go{padding:4px 16px;border:1px solid var(--line);border-radius:999px;font-size:.9rem;font-weight:600;color:var(--accent);text-decoration:none;transition:border-color .2s}
+.go:hover{border-color:var(--accent)}
+
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.slot{margin:0}
+.ph,.slot img{display:grid;place-items:center;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:22px}
+.sq .ph,.sq img{aspect-ratio:1}
+.ph{border:1.5px dashed color-mix(in srgb,var(--ink) 30%,transparent);transition:border-color .2s}
+.ph::before{content:"+";font:300 2.2rem var(--body);color:var(--muted)}
+.slot:hover .ph{border-color:var(--accent)}
+.slot img{border:1px solid var(--line)}
+.slot figcaption{margin-top:6px;font-size:.9rem;color:var(--muted);text-align:center}
+
+.skill{display:grid;grid-template-columns:120px 1fr;gap:8px 20px;align-items:center;padding:16px 0;border-top:1px solid var(--line)}
+.skill:first-child{border-top:0;padding-top:0}
+.skill:last-child{padding-bottom:0}
+.skill h3{font:600 1rem var(--body)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.pills li{padding:4px 14px;border-radius:999px;border:1px solid var(--line);font-size:.95rem}
+
+.slide.end{grid-template-rows:1fr auto}
+.slide.end>h2,.slide.end>.body{align-self:center}
+.mail{display:inline-block;font:600 clamp(1.3rem,3.2vw,2.8rem) var(--display);text-decoration-color:var(--accent);text-underline-offset:8px;word-break:break-all}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.links a{padding:8px 20px;border:1px solid var(--line);border-radius:999px;text-decoration:none;transition:border-color .2s,color .2s}
+.links a:hover{border-color:var(--accent);color:var(--accent)}
+.foot{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0;color:var(--muted);font-size:.9rem}
+
+/* tablets and phones: stacked page, menu button */
+@media (max-width:900px){
+ .slide{grid-template-columns:1fr;align-items:start;gap:20px}
+ .section:not(.hero) .slide{padding-block:56px 24px}
+ .hero-slide{padding-top:100px}
+}
+@media (max-width:760px){
+ #menu{display:inline-block}
+ nav{position:fixed;inset:0;z-index:1;margin:0;display:none;flex-direction:column;justify-content:center;gap:10px;padding:0 clamp(20px,8vw,48px);
+  background:color-mix(in srgb,var(--bg) 94%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+ nav a{font:600 2.4rem var(--display);color:var(--ink)}
+ .bar.open nav{display:flex}
+ .logo{margin-right:auto}
+}
+@media (max-width:640px){
+ .job,.skill{grid-template-columns:1fr}
+ .slots{grid-template-columns:repeat(2,1fr)}
+}
+
+/* big screens that support scroll-driven animation: full-screen snapping slides that melt into each other */
+@media (min-width:901px) and (min-height:700px) and (prefers-reduced-motion:no-preference){
+ @supports (animation-timeline:view()){
+  html{scroll-snap-type:y mandatory;scroll-padding-top:0}
+  .bar::before{display:none}
+  .section{height:100vh;height:100dvh;min-height:0;scroll-snap-align:start;scroll-snap-stop:always;view-timeline:--section}
+  .content{position:fixed;inset:0;overflow:hidden;min-height:0;animation:melt ease-in-out both;animation-timeline:--section}
+  .slide{height:100%;align-content:center}
+ }
+}
+@keyframes melt{
+ 0%,25%{opacity:0;visibility:hidden;filter:blur(1.2rem);transform:translateY(3rem) scale(.98)}
+ 50%{opacity:1;visibility:visible;filter:none;transform:none}
+ 75%,100%{opacity:0;visibility:hidden;filter:blur(1.2rem);transform:translateY(-3rem) scale(.98)}
+}
+/* alternative effect: set `animation-name:slide-x` on .content above for a horizontal slide */
+@keyframes slide-x{0%{transform:translate3d(100%,0,0)}50%{transform:none}100%{transform:translate3d(-100%,0,0)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
