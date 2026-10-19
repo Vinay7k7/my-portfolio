@@ -49,9 +49,9 @@ nav a.on,nav a:hover{color:var(--ink)}
 :root[data-theme="dark"] .moon,:root[data-theme="light"] .sun{display:none}
 
 /* sections: use the whole width */
-.slide{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(24px,5vw,88px);align-items:center;width:100%;max-width:1800px;margin-inline:auto;
+.slide{display:grid;grid-template-columns:minmax(min-content,4fr) minmax(0,7fr);gap:clamp(24px,5vw,88px);align-items:center;width:100%;max-width:1800px;margin-inline:auto;
  padding:clamp(84px,12vh,120px) clamp(20px,5vw,72px) clamp(32px,6vh,56px);text-shadow:0 0 14px var(--bg),0 0 4px var(--bg)}
-.slide>h2{font-size:clamp(2.6rem,5.2vw,5rem);font-weight:600;line-height:1;letter-spacing:-.02em;overflow-wrap:anywhere}
+.slide>h2{font-size:clamp(2.4rem,4.4vw,4.75rem);font-weight:600;line-height:1;letter-spacing:-.02em;overflow-wrap:normal;hyphens:none}
 .section{position:relative}
 .big{font:500 clamp(1.35rem,2.4vw,2rem)/1.35 var(--display);margin-bottom:28px}
 
@@ -139,15 +139,31 @@ nav a.on,nav a:hover{color:var(--ink)}
 }
 
 /* big screens that support scroll-driven animation: full-screen snapping slides that melt into each other */
-@media (min-width:901px) and (min-height:700px) and (prefers-reduced-motion:no-preference){
+@media (min-width:901px) and (min-height:460px) and (prefers-reduced-motion:no-preference){
  @supports (animation-timeline:view()){
   html{scroll-snap-type:y mandatory;scroll-padding-top:0}
   .bar::before{display:none}
   .section{height:100vh;height:100dvh;min-height:0;scroll-snap-align:start;scroll-snap-stop:always;view-timeline:--section}
   .content{position:fixed;inset:0;overflow:hidden;min-height:0;animation:melt ease-in-out both;animation-timeline:--section}
-  .slide{height:100%;align-content:center}
+  .slide{height:100%;align-content:center;padding-block:clamp(76px,10vh,120px) clamp(24px,5vh,56px)}
  }
 }
+/* short viewports (zoomed-in browsers, small laptops): compact everything so a section still fits */
+@media (min-width:901px) and (max-height:760px){
+ .slide{padding-block:clamp(68px,9vh,96px) clamp(18px,4vh,40px);gap:clamp(20px,3.5vw,56px)}
+ .slide>h2{font-size:clamp(2rem,3.4vw,3.5rem)}
+ .big{font:500 clamp(1.15rem,1.8vw,1.55rem)/1.35 var(--display);margin-bottom:18px}
+ .stats{gap:10px;margin-bottom:18px}
+ .stats div{padding:12px 14px}
+ .stats b{font-size:1.75rem}
+ .job{padding-bottom:16px}
+ .job+.job{padding-top:16px}
+ .job h3,.proj h3{font-size:1.2rem}
+ .proj,.skill{padding:12px 0}
+ .slots{gap:12px}
+}
+.stats span{text-wrap:balance}
+
 @keyframes melt{
  0%,25%{opacity:0;visibility:hidden;filter:blur(1.2rem);transform:translateY(3rem) scale(.98)}
  50%{opacity:1;visibility:visible;filter:none;transform:none}
