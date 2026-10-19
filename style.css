@@ -49,9 +49,11 @@ nav a.on,nav a:hover{color:var(--ink)}
 :root[data-theme="dark"] .moon,:root[data-theme="light"] .sun{display:none}
 
 /* sections: use the whole width */
-.slide{display:grid;grid-template-columns:minmax(min-content,4fr) minmax(0,7fr);gap:clamp(24px,5vw,88px);align-items:center;width:100%;max-width:1800px;margin-inline:auto;
+/* FIX 1: first column is never narrower than the heading (max-content instead of min-content) */
+.slide{display:grid;grid-template-columns:minmax(max-content,4fr) minmax(0,7fr);gap:clamp(24px,5vw,88px);align-items:center;width:100%;max-width:1800px;margin-inline:auto;
  padding:clamp(84px,12vh,120px) clamp(20px,5vw,72px) clamp(32px,6vh,56px);text-shadow:0 0 14px var(--bg),0 0 4px var(--bg)}
-.slide>h2{font-size:clamp(2.4rem,4.4vw,4.75rem);font-weight:600;line-height:1;letter-spacing:-.02em;overflow-wrap:normal;hyphens:none}
+/* FIX 2: heading stays on one line, with a slightly smaller max size */
+.slide>h2{font-size:clamp(2.2rem,3.8vw,4.5rem);font-weight:600;line-height:1;letter-spacing:-.02em;white-space:nowrap;overflow-wrap:normal;hyphens:none}
 .section{position:relative}
 .big{font:500 clamp(1.35rem,2.4vw,2rem)/1.35 var(--display);margin-bottom:28px}
 
